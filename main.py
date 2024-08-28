@@ -1,7 +1,8 @@
 import random
+
 class Die:
 
-    def __init__(self, ):
+    def __init__(self,):
         self._value = None
 
     @property
@@ -42,8 +43,8 @@ class Player:
 
 class DiceGame:
     def __init__(self, player, computer):
-        self.computer = computer
-        self.player = player
+        self._computer = computer
+        self._player = player
 
     def play(self):
       print("==============================================")
@@ -72,10 +73,29 @@ class DiceGame:
 
         if player_value > computer_value:
             print("You won the round!")
+            self._player.decrement_counter()  #winner
+            self._computer.increment_counter()  #loser
         elif computer_value > player_value:
             print("The computer win this round. Try again!")
+            self._computer.decrement_counter()  # winner
+            self._player.increment_counter()  # loser
         else:
             print("It is a tie")
 
+        #Show counters
         print(f"Your counter: {self._player.counter}")
         print(f"Computer counter: {self._computer.counter}")
+
+
+#Create instances
+player_die = Die()
+computer_die = Die()
+
+
+my_player = Player(player_die, is_computer=False)
+computer_player = Player(computer_die, is_computer=True)
+
+game = DiceGame(my_player, computer_player)
+
+#Start the game
+game.play()
