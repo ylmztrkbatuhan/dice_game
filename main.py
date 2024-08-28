@@ -56,8 +56,7 @@ class DiceGame:
 
     def play_round(self):
         #welcome the user
-        print("---------New Round-----------")
-        input(" 🎲🎲Press any key to roll the dice.🎲🎲")
+        self.print_round_welcome()
 
         #roll the dice
 
@@ -65,27 +64,41 @@ class DiceGame:
         computer_value = self._computer.roll_die()
 
         #show the values
+        self.show_dice(player_value, computer_value)
 
-        print(f"Your die: {player_value}")
-        print(f"computer die:{computer_value}")
 
         #Determine winner and loser
 
         if player_value > computer_value:
             print("You won the round!")
-            self._player.decrement_counter()  #winner
-            self._computer.increment_counter()  #loser
+            self.update_counters(winner=self._player, loser=self._computer)
         elif computer_value > player_value:
             print("The computer win this round. Try again!")
-            self._computer.decrement_counter()  # winner
-            self._player.increment_counter()  # loser
+            self.update_counters(winner=self._computer, loser=self._player)
         else:
             print("It is a tie")
 
         #Show counters
+        self.show_counters()
+
+
+    def print_round_welcome(self):
+        print("---------New Round-----------")
+        input(" 🎲🎲Press any key to roll the dice.🎲🎲")
+
+
+    def show_dice(self, player_value, computer_value):
+        print(f"Your die: {player_value}")
+        print(f"computer die:{computer_value}")
+
+
+    def update_counters(self, winner, loser):
+        winner.decrement_counter()
+        loser.increment_counter()
+
+    def show_counters(self):
         print(f"Your counter: {self._player.counter}")
         print(f"Computer counter: {self._computer.counter}")
-
 
 #Create instances
 player_die = Die()
