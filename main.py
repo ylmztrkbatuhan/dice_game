@@ -52,7 +52,9 @@ class DiceGame:
       print("===================================")
       while True:
           self.play_round()
-          #TO DO: implement game over
+          game_over = self.check_game_over()
+          if game_over:
+              break
 
     def play_round(self):
         #welcome the user
@@ -83,13 +85,13 @@ class DiceGame:
 
 
     def print_round_welcome(self):
-        print("---------New Round-----------")
+        print("\n---------New Round-----------")
         input(" 🎲🎲Press any key to roll the dice.🎲🎲")
 
 
     def show_dice(self, player_value, computer_value):
         print(f"Your die: {player_value}")
-        print(f"computer die:{computer_value}")
+        print(f"computer die:{computer_value}\n")
 
 
     def update_counters(self, winner, loser):
@@ -97,17 +99,44 @@ class DiceGame:
         loser.increment_counter()
 
     def show_counters(self):
-        print(f"Your counter: {self._player.counter}")
+        print(f"\nYour counter: {self._player.counter}")
         print(f"Computer counter: {self._computer.counter}")
 
-#Create instances
+
+    def check_game_over(self):
+        if self._player.counter == 0:
+            self.show_game_over(self._player)
+            return True
+        elif self._computer.counter == 0:
+             self.show_game_over(self._computer)
+             return True
+        else:
+             return False
+
+
+    def show_game_over(self, winner):
+        if winner.is_computer:
+            print("\n==========================")
+            print(" G A M E -- O V E R")
+            print("==============================")
+            print("The computer won the game. Sorry....")
+            print("==============================")
+
+        else:
+            print("\n==========================")
+            print(" G A M E -- O V E R")
+            print("==============================")
+            print("You won the game! Congratulations.")
+            print("==============================")
+#Create instances of die
 player_die = Die()
 computer_die = Die()
 
-
+#Create the instances of the players
 my_player = Player(player_die, is_computer=False)
 computer_player = Player(computer_die, is_computer=True)
 
+#create the game instance
 game = DiceGame(my_player, computer_player)
 
 #Start the game
